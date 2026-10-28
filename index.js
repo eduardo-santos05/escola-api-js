@@ -27,6 +27,15 @@ function validarTurma(req, res, next) {
     next()
 }
 
+function verificarSala(req, res, next) {
+    for (let i = 0; i < turmas.length; i++) {
+        if (turmas[i].sala === req.body.sala) {
+            return res.status(409).send({ erro: "Essa sala já está em uso" })
+        }
+    }
+    next()
+}
+
 router.use(registrarLog)
 
 router.listen(port, () => {
