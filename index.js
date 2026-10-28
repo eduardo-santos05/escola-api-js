@@ -55,6 +55,19 @@ router.post("/turmas", validarTurma, verificarSala, (req, res) => {
     res.status(201).send(turma)
 })
 
+router.get("/alunos", (req, res) => {
+    res.send(alunos)
+})
+
+router.get("/alunos/:id", (req, res) => {
+    let id = Number(req.params.id)
+    let indice = alunos.findIndex((aluno) => aluno.id === id)
+    if (indice === -1) {
+        return res.status(404).send({ erro: "Aluno não encontrado" })
+    }
+    res.send(alunos[indice])
+})
+
 function validarAluno(req, res, next) {
     if (!req.body.nome || !req.body.idade) {
         return res.status(400).send({ erro: "Informe nome e idade" })
@@ -70,17 +83,18 @@ function validarIdade(req, res, next) {
     next()
 }
 
-router.get("/alunos", (req, res) => {
-    res.send(alunos)
-})
-
-router.get("/alunos/:id", (req, res) => {
-    let id = Number(req.params.id)
-    let indice = alunos.findIndex((aluno) => aluno.id === id)
-    if (indice === -1) {
-        return res.status(404).send({ erro: "Aluno não encontrado" })
+router.post("/alunos", validarAluno, validarIdade, (req, res) => {
+    let id = 1
+    if (alunos.length > 0) {
+        id = alunos[alunos.length - 1].id + 1
     }
-    res.send(alunos[indice])
+    let nome = req.body.nome
+    let idade = Number(req.body.idade)
+    
+    let aluno = { id: id, nome: nome, idade: idade }
+    alunos.push(aluno)
+    
+    res.status(201).send(aluno)
 })
 
 function verificarSenha(req, res, next) {
