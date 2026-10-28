@@ -53,6 +53,13 @@ function validarIdade(req, res, next) {
     next()
 }
 
+function verificarSenha(req, res, next) {
+    if (req.headers.senha !== "coordenacao"){
+        return res.status(401).send({ erro: "Acesso não autorizado" })
+    }
+    next()
+}
+
 router.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`)
 })
