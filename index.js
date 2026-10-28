@@ -118,7 +118,7 @@ router.put("/alunos/:id", validarIdade, (req, res) => {
     let id = Number(req.params.id)
     let indice = alunos.findIndex((aluno) => aluno.id === id)
     if (indice === -1) {
-        res.status(404).send({ erro: "Aluno não encontrado" })
+        return res.status(404).send({ erro: "Aluno não encontrado" })
     }
 
     let novaIdade = Number(req.body.idade)
