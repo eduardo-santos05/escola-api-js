@@ -55,6 +55,23 @@ router.post("/turmas", validarTurma, verificarSala, (req, res) => {
     res.status(201).send(turma)
 })
 
+function verificarSenha(req, res, next) {
+    if (req.headers.senha !== "coordenacao"){
+        return res.status(401).send({ erro: "Acesso não autorizado" })
+    }
+    next()
+}
+
+router.delete("/turmas/:id", verificarSenha, (req, res) => {
+    let id = Number(req.params.id)
+    let indice = turmas.findIndex((turma) => turma.id === id)
+    if (indice === -1) {
+        return res.status(404).send({ erro: "Turma não encontrada" })
+    }
+    turmas.splice(indice, 1)
+    res.send({ mensagem: 'Turma removida' })
+})
+
 router.get("/alunos", (req, res) => {
     res.send(alunos)
 })
@@ -93,16 +110,9 @@ router.post("/alunos", validarAluno, validarIdade, (req, res) => {
     
     let aluno = { id: id, nome: nome, idade: idade }
     alunos.push(aluno)
-    
+
     res.status(201).send(aluno)
 })
-
-function verificarSenha(req, res, next) {
-    if (req.headers.senha !== "coordenacao"){
-        return res.status(401).send({ erro: "Acesso não autorizado" })
-    }
-    next()
-}
 
 router.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`)
