@@ -45,6 +45,14 @@ function validarAluno(req, res, next) {
     next()
 }
 
+function validarIdade(req, res, next) {
+    let idade = Number(req.body.idade)
+    if (idade < 14) {
+        return res.status(400).send({ erro: "Idade mínima: 14 anos" })
+    }
+    next()
+}
+
 router.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`)
 })
