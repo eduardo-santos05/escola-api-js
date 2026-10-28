@@ -15,6 +15,13 @@ let alunos = [
     { id: 2, nome: 'Bruno', idade: 19 }
 ]
 
+function registrarLog(req, res, next) {
+    console.log(`${req.method} - ${req.url}`)
+    next()
+}
+
+router.use(registrarLog)
+
 router.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`)
 })
