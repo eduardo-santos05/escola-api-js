@@ -70,6 +70,19 @@ function validarIdade(req, res, next) {
     next()
 }
 
+router.get("/alunos", (req, res) => {
+    res.send(alunos)
+})
+
+router.get("/alunos/:id", (req, res) => {
+    let id = Number(req.params.id)
+    let indice = alunos.findIndex((aluno) => aluno.id === id)
+    if (indice === -1) {
+        return res.status(404).send({ erro: "Aluno não encontrado" })
+    }
+    res.send(alunos[indice])
+})
+
 function verificarSenha(req, res, next) {
     if (req.headers.senha !== "coordenacao"){
         return res.status(401).send({ erro: "Acesso não autorizado" })
