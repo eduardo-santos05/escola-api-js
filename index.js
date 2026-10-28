@@ -114,6 +114,24 @@ router.post("/alunos", validarAluno, validarIdade, (req, res) => {
     res.status(201).send(aluno)
 })
 
+router.put("/alunos/:id", validarIdade, (req, res) => {
+    let id = Number(req.params.id)
+    let indice = alunos.findIndex((aluno) => aluno.id === id)
+    if (indice === -1) {
+        res.status(404).send({ erro: "Aluno não encontrado" })
+    }
+
+    let novaIdade = Number(req.body.idade)
+
+    if (!novaIdade) {
+        return res.status(400).send({ erro: 'Informe a nova idade' })
+    }
+
+    alunos[indice].idade = novaIdade
+
+    res.send(alunos[indice])
+})
+
 router.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`)
 })
