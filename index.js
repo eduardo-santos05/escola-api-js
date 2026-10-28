@@ -20,6 +20,13 @@ function registrarLog(req, res, next) {
     next()
 }
 
+function validarTurma(req, res, next) {
+    if (!req.body.nome || !req.body.sala) {
+        return res.status(400).send({ erro: "Informe nome e sala" })
+    }
+    next()
+}
+
 router.use(registrarLog)
 
 router.listen(port, () => {
