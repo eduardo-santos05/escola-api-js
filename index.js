@@ -20,6 +20,8 @@ function registrarLog(req, res, next) {
     next()
 }
 
+router.use(registrarLog)
+
 function validarTurma(req, res, next) {
     if (!req.body.nome || !req.body.sala) {
         return res.status(400).send({ erro: "Informe nome e sala" })
@@ -36,7 +38,12 @@ function verificarSala(req, res, next) {
     next()
 }
 
-router.use(registrarLog)
+function validarAluno(req, res, next) {
+    if (!req.body.nome || !req.body.idade) {
+        return res.status(400).send({ erro: "Informe nome e idade" })
+    }
+    next()
+}
 
 router.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`)
