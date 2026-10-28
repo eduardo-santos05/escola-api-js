@@ -42,6 +42,19 @@ function verificarSala(req, res, next) {
     next()
 }
 
+router.post("/turmas", validarTurma, verificarSala, (req, res) => {
+    let id = 1
+    if (turmas.length > 0) {
+        id = turmas[turmas.length - 1].id + 1
+    }
+    let nome = req.body.nome
+    let sala = req.body.sala
+    
+    let turma = { id: id, nome: nome, sala: sala }
+    turmas.push(turma)
+    res.status(201).send(turma)
+})
+
 function validarAluno(req, res, next) {
     if (!req.body.nome || !req.body.idade) {
         return res.status(400).send({ erro: "Informe nome e idade" })
